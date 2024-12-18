@@ -61,7 +61,9 @@ function historyListGeneration(){
         buttonel.textContent = history[i]
         historyList.append(listel)
         listel.append(buttonel)
-
+        buttonel.addEventListener('click',()=>{
+        fetchCityWeather(history[i])
+        })
     }
 
 }
