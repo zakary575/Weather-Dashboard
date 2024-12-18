@@ -1,6 +1,8 @@
 const form = document.querySelector("#form");
 const cityInput = document.querySelector("#search");
+const historyList = document.querySelector("#history");
 
+let history = JSON.parse(localStorage.getItem('history')) || [];
 
 function fetchCityWeather(query) {
   const apiKey = "6b72207fdbe6c16dfd1499cbda3aa797";
@@ -19,7 +21,7 @@ function fetchCityWeather(query) {
       console.log(data);
       console.log(data[0].lat);
       console.log(data[0].lon);
-      fetchWeather(data);
+      return fetchWeather(data);
     })
     .catch(function (error) {
       return [];
@@ -42,20 +44,50 @@ function fetchWeather(query) {
     })
     .then(function (data) {
       console.log(data);
-      return dataS || [];
+      return data || [];
     })
     .catch(function (error) {
       return [];
     });
 }
 
+function historyListGeneration(){
+    historyList.innerHTML = ""
 
-function handleSearch(event){
-event.preventDefault()
-console.log(cityInput.value)
-fetchCityWeather(cityInput.value)
+    for(let i = 0; i<history.length;i++){
+        const listel = document.createElement('li')
+        const buttonel = document.createElement('button'
+        )
+        buttonel.textContent = history[i]
+        historyList.append(listel)
+        listel.append(buttonel)
+
+    }
+
 }
 
-form.addEventListener('submit',handleSearch);
+function addToHistory(value){
+    console.log(history)
+    newHistory = history.filter((city) => city !== value)
+    newHistory.unshift(value)
+    console.log(newHistory)
+    localStorage.setItem("history", JSON.stringify(newHistory));
+    history = newHistory
+}
 
+function handleSearch(event) {
+  event.preventDefault();
+  console.log(cityInput.value);
+  addToHistory(cityInput.value)
+  fetchCityWeather(cityInput.value).then(function (weather) {
+    console.log(weather);
+    localStorage.setItem("weather", JSON.stringify(weather));
+  });
+  document.getElementById("search").value = ""
+  historyListGeneration()
+}
+
+form.addEventListener("submit", handleSearch);
+
+historyListGeneration()
 
