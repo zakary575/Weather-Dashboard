@@ -8,6 +8,7 @@ header {
   text-align: center;
 }
 
+/* spliting the screen so search bar is on one side and the forcast is on the other */
 #nav {
   width: 20%;
   float: left;
@@ -18,20 +19,31 @@ header {
   float: right;
 }
 
-#form{
-    width: 100%;
-    text-align: center;
+/* styling the form and the elements within */
+#form {
+  width: 100%;
+  text-align: center;
 }
 
-
-#search{
-    width: 90%;
+#search {
+  width: 90%;
 }
 
-#history button{
-width: 100%;
+ul {
+  list-style-type: none;
+  padding: 5px;
 }
 
+li {
+  margin: 5px;
+  padding: 5px;
+}
+
+#history button {
+  width: 100%;
+}
+
+/* styling todays weather */
 #today {
   margin: 5px;
   display: block;
@@ -42,9 +54,9 @@ width: 100%;
   padding: 5px;
   background-color: skyblue;
   border-radius: 10px;
-  border: 3px,solid,black
+  border: 3px, solid, black;
 }
-
+/* styling the forecast */
 #forecast {
   margin: 5px;
   display: flex;
@@ -56,15 +68,5 @@ width: 100%;
   background-color: skyblue;
   width: 25%;
   border-radius: 10px;
-  border: 3px,solid,black
-}
-
-ul {
-  list-style-type: none;
-  padding: 5px;
-}
-
-li {
-  margin: 5px;
-  padding: 5px;
+  border: 3px, solid, black;
 }

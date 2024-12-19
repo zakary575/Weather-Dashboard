@@ -6,6 +6,7 @@ const forecast = document.querySelector("#forecast");
 
 let history = JSON.parse(localStorage.getItem("history")) || [];
 
+// function that fetchs a citys longitude and latitude given the city name
 function fetchCityWeather(query) {
   const apiKey = "6b72207fdbe6c16dfd1499cbda3aa797";
   const city = encodeURI(query);
@@ -30,6 +31,7 @@ function fetchCityWeather(query) {
     });
 }
 
+// function that fetchs the weather given longitude and latitude
 function fetchWeather(query) {
   const apiKey = "6b72207fdbe6c16dfd1499cbda3aa797";
   const lat = query[0].lat;
@@ -53,6 +55,7 @@ function fetchWeather(query) {
     });
 }
 
+// function that generates the history list buttons
 function historyListGeneration() {
   historyList.innerHTML = "";
 
@@ -69,6 +72,7 @@ function historyListGeneration() {
   }
 }
 
+// function that takes the data from the fetch and renders todays weather
 function renderWeather(data) {
   today.innerHTML = "";
   let weatherEmoji = "";
@@ -108,6 +112,7 @@ function renderWeather(data) {
   resultsBody.append(dateEl, tempEl, windEl, humEl);
 }
 
+// function that takes the data from the fetch and renders the forecast
 function renderForecast(data) {
   forecast.innerHTML = "";
   let weatherEmoji = "";
@@ -136,8 +141,6 @@ function renderForecast(data) {
       data.list[8 * i].dt_txt.split(" ")[0]
     }  ${weatherEmoji}`;
 
-    // const iconEl = document.createElement('img')
-
     const tempEl = document.createElement("p");
     tempEl.textContent = `Temperature: ${Math.round(
       data.list[8 * i].main.temp
@@ -152,10 +155,13 @@ function renderForecast(data) {
     forecastBody.append(dateEl, tempEl, windEl, humEl);
   }
 }
+
+// function that will take the input and capitalize the first letter and lowercase the rest
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
+// function that adds to the search to the history in local storage
 function addToHistory(value) {
   console.log(history);
   newHistory = history.filter((city) => city !== value);
@@ -165,6 +171,7 @@ function addToHistory(value) {
   history = newHistory;
 }
 
+// function takes the input and puts it into the fetch
 function search() {
   const city = capitalizeFirstLetter(cityInput.value);
   console.log(city);
@@ -179,6 +186,7 @@ function search() {
   historyListGeneration();
 }
 
+// search event handler for when the input is sumbmited
 function handleSearch(event) {
   event.preventDefault();
   search();
@@ -186,4 +194,5 @@ function handleSearch(event) {
 
 form.addEventListener("submit", handleSearch);
 
+// calls history list gerneration so that it will be on the page when it is loaded
 historyListGeneration();
