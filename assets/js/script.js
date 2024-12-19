@@ -1,10 +1,10 @@
 const form = document.querySelector("#form");
 const cityInput = document.querySelector("#search");
 const historyList = document.querySelector("#history");
-const today = document.querySelector('#today')
-const forecast = document.querySelector('#forecast')
+const today = document.querySelector("#today");
+const forecast = document.querySelector("#forecast");
 
-let history = JSON.parse(localStorage.getItem('history')) || [];
+let history = JSON.parse(localStorage.getItem("history")) || [];
 
 function fetchCityWeather(query) {
   const apiKey = "6b72207fdbe6c16dfd1499cbda3aa797";
@@ -53,105 +53,137 @@ function fetchWeather(query) {
     });
 }
 
-function historyListGeneration(){
-    historyList.innerHTML = ""
+function historyListGeneration() {
+  historyList.innerHTML = "";
 
-    for(let i = 0; i<history.length;i++){
-        const listel = document.createElement('li')
-        const buttonel = document.createElement('button'
-        )
-        buttonel.textContent = history[i]
-        historyList.append(listel)
-        listel.append(buttonel)
-        buttonel.addEventListener('click',()=>{
-        cityInput.value = history[i]
-        search()
-        })
-    }
-
+  for (let i = 0; i < history.length; i++) {
+    const listel = document.createElement("li");
+    const buttonel = document.createElement("button");
+    buttonel.textContent = history[i];
+    historyList.append(listel);
+    listel.append(buttonel);
+    buttonel.addEventListener("click", () => {
+      cityInput.value = history[i];
+      search();
+    });
+  }
 }
 
-function renderWeather(data){
-    today.innerHTML=''
+function renderWeather(data) {
+  today.innerHTML = "";
+  let weatherEmoji = "";
 
-    const resultsBody = document.createElement('div')
-    today.append(resultsBody)
+  const resultsBody = document.createElement("div");
+  today.append(resultsBody);
 
-    const dateEl = document.createElement('h1')
-    dateEl.textContent =`${data.city.name} ${(data.list[0].dt_txt).split(' ')[0]}`
-    
-    // const iconEl = document.createElement('img')
-    
-    const tempEl = document.createElement('p')
-    tempEl.textContent = `Temperature: ${Math.round(data.list[0].main.temp)}°F`
+  switch (data.list[0].weather[0].main) {
+    case "Clouds":
+      weatherEmoji = "☁️";
+      break;
+    case "Rain":
+      weatherEmoji = "🌧️";
+      break;
+    case "Clear":
+      weatherEmoji = "☀️";
+      break;
+    case "Snow":
+      weatherEmoji = "❄️";
+      break;
+  }
 
-    const windEl = document.createElement('p')
-    windEl.textContent = `Wind Speed:  ${data.list[0].wind.speed} mph`
+  const dateEl = document.createElement("h1");
+  dateEl.textContent = `${data.city.name} ${
+    data.list[0].dt_txt.split(" ")[0]
+  }  ${weatherEmoji}`;
 
-    const humEl = document.createElement('p')
-    humEl.textContent = `Humidity: ${data.list[0].main.humidity} %`
+  const tempEl = document.createElement("p");
+  tempEl.textContent = `Temperature: ${Math.round(data.list[0].main.temp)}°F`;
 
-    resultsBody.append(dateEl,tempEl,windEl,humEl)
+  const windEl = document.createElement("p");
+  windEl.textContent = `Wind Speed:  ${data.list[0].wind.speed} mph`;
+
+  const humEl = document.createElement("p");
+  humEl.textContent = `Humidity: ${data.list[0].main.humidity} %`;
+
+  resultsBody.append(dateEl, tempEl, windEl, humEl);
 }
 
-function renderForecast(data){
-  forecast.innerHTML =''
+function renderForecast(data) {
+  forecast.innerHTML = "";
+  let weatherEmoji = "";
 
-    for(let i = 1;i< 5;i++){
+  for (let i = 1; i < 5; i++) {
+    const forecastBody = document.createElement("div");
+    forecast.append(forecastBody);
 
-    const forecastBody = document.createElement('div')
-    forecast.append(forecastBody)
-
-    const dateEl = document.createElement('h1')
-    dateEl.textContent =`${(data.list[8*i].dt_txt).split(' ')[0]}`
-    
-    // const iconEl = document.createElement('img')
-    
-    const tempEl = document.createElement('p')
-    tempEl.textContent = `Temperature: ${Math.round(data.list[8*i].main.temp)}°F`
-
-    const windEl = document.createElement('p')
-    windEl.textContent = `Wind Speed:  ${data.list[8*i].wind.speed} mph`
-
-    const humEl = document.createElement('p')
-    humEl.textContent = `Humidity: ${data.list[8*i].main.humidity} %`
-
-    forecastBody.append(dateEl,tempEl,windEl,humEl)
+    switch (data.list[8 * i].weather[0].main) {
+      case "Clouds":
+        weatherEmoji = "☁️";
+        break;
+      case "Rain":
+        weatherEmoji = "🌧️";
+        break;
+      case "Clear":
+        weatherEmoji = "☀️";
+        break;
+      case "Snow":
+        weatherEmoji = "❄️";
+        break;
     }
+
+    const dateEl = document.createElement("h1");
+    dateEl.textContent = `${
+      data.list[8 * i].dt_txt.split(" ")[0]
+    }  ${weatherEmoji}`;
+
+    // const iconEl = document.createElement('img')
+
+    const tempEl = document.createElement("p");
+    tempEl.textContent = `Temperature: ${Math.round(
+      data.list[8 * i].main.temp
+    )}°F`;
+
+    const windEl = document.createElement("p");
+    windEl.textContent = `Wind Speed:  ${data.list[8 * i].wind.speed} mph`;
+
+    const humEl = document.createElement("p");
+    humEl.textContent = `Humidity: ${data.list[8 * i].main.humidity} %`;
+
+    forecastBody.append(dateEl, tempEl, windEl, humEl);
+  }
 }
 function capitalizeFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-function addToHistory(value){
-    console.log(history)
-    newHistory = history.filter((city) => city !== value)
-    newHistory.unshift(value)
-    console.log(newHistory)
-    localStorage.setItem("history", JSON.stringify(newHistory));
-    history = newHistory
+function addToHistory(value) {
+  console.log(history);
+  newHistory = history.filter((city) => city !== value);
+  newHistory.unshift(value);
+  console.log(newHistory);
+  localStorage.setItem("history", JSON.stringify(newHistory));
+  history = newHistory;
 }
 
-function search(){
-    const city = capitalizeFirstLetter(cityInput.value)
-    console.log(city);
-    addToHistory(city)
-    fetchCityWeather(city).then(function (weather) {
-      console.log(weather);
-      renderWeather(weather)
-      renderForecast(weather)
-      localStorage.setItem("weather", JSON.stringify(weather));
-    });
-    document.getElementById("search").value = ""
-    historyListGeneration()
+function search() {
+  const city = capitalizeFirstLetter(cityInput.value);
+  console.log(city);
+  addToHistory(city);
+  fetchCityWeather(city).then(function (weather) {
+    console.log(weather);
+    renderWeather(weather);
+    renderForecast(weather);
+    localStorage.setItem("weather", JSON.stringify(weather));
+  });
+  document.getElementById("search").value = "";
+  historyListGeneration();
 }
 
 function handleSearch(event) {
   event.preventDefault();
-  search()
+  search();
 }
 
 form.addEventListener("submit", handleSearch);
 
-historyListGeneration()
-
+historyListGeneration();

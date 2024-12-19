@@ -25,7 +25,7 @@ header {
 
 
 #search{
-    width: 100%;
+    width: 90%;
 }
 
 #history button{
@@ -41,6 +41,8 @@ width: 100%;
   margin: 5px;
   padding: 5px;
   background-color: skyblue;
+  border-radius: 10px;
+  border: 3px,solid,black
 }
 
 #forecast {
@@ -53,6 +55,8 @@ width: 100%;
   margin: 5px;
   background-color: skyblue;
   width: 25%;
+  border-radius: 10px;
+  border: 3px,solid,black
 }
 
 ul {
