@@ -11,7 +11,7 @@ function fetchCityWeather(query) {
   const apiKey = "6b72207fdbe6c16dfd1499cbda3aa797";
   const city = encodeURI(query);
 
-  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
 
   return fetch(url)
     .then(function (response) {
