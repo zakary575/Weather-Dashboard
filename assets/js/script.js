@@ -103,7 +103,7 @@ function renderForecast(data){
     forecast.append(forecastBody)
 
     const dateEl = document.createElement('h1')
-    dateEl.textContent =`${data.city.name} ${(data.list[8*i].dt_txt).split(' ')[0]}`
+    dateEl.textContent =`${(data.list[8*i].dt_txt).split(' ')[0]}`
     
     // const iconEl = document.createElement('img')
     
@@ -119,6 +119,9 @@ function renderForecast(data){
     forecastBody.append(dateEl,tempEl,windEl,humEl)
     }
 }
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 
 function addToHistory(value){
     console.log(history)
@@ -130,9 +133,10 @@ function addToHistory(value){
 }
 
 function search(){
-    console.log(cityInput.value);
-    addToHistory(cityInput.value)
-    fetchCityWeather(cityInput.value).then(function (weather) {
+    const city = capitalizeFirstLetter(cityInput.value)
+    console.log(city);
+    addToHistory(city)
+    fetchCityWeather(city).then(function (weather) {
       console.log(weather);
       renderWeather(weather)
       renderForecast(weather)

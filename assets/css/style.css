@@ -1,8 +1,66 @@
-ul {
-    list-style-type: none;
+body {
+  background-color: grey;
 }
 
-li{
-    margin: 5px;
-    padding: 5px
+header {
+  background-color: black;
+  color: skyblue;
+  text-align: center;
+}
+
+#nav {
+  width: 20%;
+  float: left;
+}
+
+#results {
+  width: 80%;
+  float: right;
+}
+
+#form{
+    width: 100%;
+    text-align: center;
+}
+
+
+#search{
+    width: 100%;
+}
+
+#history button{
+width: 100%;
+}
+
+#today {
+  margin: 5px;
+  display: block;
+}
+
+#today div {
+  margin: 5px;
+  padding: 5px;
+  background-color: skyblue;
+}
+
+#forecast {
+  margin: 5px;
+  display: flex;
+}
+
+#forecast div {
+  padding: 10px;
+  margin: 5px;
+  background-color: skyblue;
+  width: 25%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 5px;
+}
+
+li {
+  margin: 5px;
+  padding: 5px;
 }

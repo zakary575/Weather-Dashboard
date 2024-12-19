@@ -7,17 +7,18 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
-    <section>
+    <header>
+      <h1>Weather Dashboard</h1>
+    </header>
+    <section id="nav">
       <form id="form">
-        <span>Search for a city</span>
-        <br />
-        <br />
+        <h3>Search for a city</h3>
         <input type="text" id="search" name="city" /><br /><br />
         <input type="submit" value="Submit" />
       </form>
+      <ul id="history"></ul>
     </section>
-    <ul id="history"></ul>
-    <section>
+    <section id="results">
       <!-- results -->
       <div id="today"></div>
       <div id="forecast"></div>
