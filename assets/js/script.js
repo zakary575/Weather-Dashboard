@@ -1,6 +1,8 @@
 const form = document.querySelector("#form");
 const cityInput = document.querySelector("#search");
 const historyList = document.querySelector("#history");
+const today = document.querySelector('#today')
+const forecast = document.querySelector('#forecast')
 
 let history = JSON.parse(localStorage.getItem('history')) || [];
 
@@ -33,7 +35,7 @@ function fetchWeather(query) {
   const lat = query[0].lat;
   const lon = query[0].lon;
 
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
 
   return fetch(url)
     .then(function (response) {
@@ -62,10 +64,60 @@ function historyListGeneration(){
         historyList.append(listel)
         listel.append(buttonel)
         buttonel.addEventListener('click',()=>{
-        fetchCityWeather(history[i])
+        cityInput.value = history[i]
+        search()
         })
     }
 
+}
+
+function renderWeather(data){
+    today.innerHTML=''
+
+    const resultsBody = document.createElement('div')
+    today.append(resultsBody)
+
+    const dateEl = document.createElement('h1')
+    dateEl.textContent =`${data.city.name} ${(data.list[0].dt_txt).split(' ')[0]}`
+    
+    // const iconEl = document.createElement('img')
+    
+    const tempEl = document.createElement('p')
+    tempEl.textContent = `Temperature: ${Math.round(data.list[0].main.temp)}°F`
+
+    const windEl = document.createElement('p')
+    windEl.textContent = `Wind Speed:  ${data.list[0].wind.speed} mph`
+
+    const humEl = document.createElement('p')
+    humEl.textContent = `Humidity: ${data.list[0].main.humidity} %`
+
+    resultsBody.append(dateEl,tempEl,windEl,humEl)
+}
+
+function renderForecast(data){
+  forecast.innerHTML =''
+
+    for(let i = 1;i< 5;i++){
+
+    const forecastBody = document.createElement('div')
+    forecast.append(forecastBody)
+
+    const dateEl = document.createElement('h1')
+    dateEl.textContent =`${data.city.name} ${(data.list[8*i].dt_txt).split(' ')[0]}`
+    
+    // const iconEl = document.createElement('img')
+    
+    const tempEl = document.createElement('p')
+    tempEl.textContent = `Temperature: ${Math.round(data.list[8*i].main.temp)}°F`
+
+    const windEl = document.createElement('p')
+    windEl.textContent = `Wind Speed:  ${data.list[8*i].wind.speed} mph`
+
+    const humEl = document.createElement('p')
+    humEl.textContent = `Humidity: ${data.list[8*i].main.humidity} %`
+
+    forecastBody.append(dateEl,tempEl,windEl,humEl)
+    }
 }
 
 function addToHistory(value){
@@ -77,16 +129,22 @@ function addToHistory(value){
     history = newHistory
 }
 
+function search(){
+    console.log(cityInput.value);
+    addToHistory(cityInput.value)
+    fetchCityWeather(cityInput.value).then(function (weather) {
+      console.log(weather);
+      renderWeather(weather)
+      renderForecast(weather)
+      localStorage.setItem("weather", JSON.stringify(weather));
+    });
+    document.getElementById("search").value = ""
+    historyListGeneration()
+}
+
 function handleSearch(event) {
   event.preventDefault();
-  console.log(cityInput.value);
-  addToHistory(cityInput.value)
-  fetchCityWeather(cityInput.value).then(function (weather) {
-    console.log(weather);
-    localStorage.setItem("weather", JSON.stringify(weather));
-  });
-  document.getElementById("search").value = ""
-  historyListGeneration()
+  search()
 }
 
 form.addEventListener("submit", handleSearch);
